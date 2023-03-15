@@ -9,10 +9,10 @@ from utils import *
 
 def get_laion(num_sample, file_root, save_root):
     sampled_df_list = []
-    num_files = 1
+    num_files = 32
     for i in tqdm.tqdm(range(num_files)):
         filename = 'part-{}-5b54c5d5-bbcf-484d-a2ce-0d6f73df1a36-c000.snappy.parquet'.format(str(i).zfill(5))
-        data = pd.read_parquet(os.path.join(file_root, filename))[:200]
+        data = pd.read_parquet(os.path.join(file_root, filename))
         data = data.sample(n=int(num_sample/num_files))
         df = pd.DataFrame({"prompt": data['TEXT'].tolist(),
                            "sample_id": data['SAMPLE_ID'].tolist(),

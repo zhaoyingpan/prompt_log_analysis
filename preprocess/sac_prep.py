@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import sqlite3
 import sys
@@ -5,7 +6,7 @@ sys.path.append('..')
 from utils import *
 # sac-specific functions
 
-def get_sac(sqlite_path, save_path):
+def get_sac(sqlite_path, save_root):
     # Create a SQL connection to the SQLite database
     con = sqlite3.connect(sqlite_path)
 
@@ -60,4 +61,5 @@ def get_sac(sqlite_path, save_path):
                     "path": [value['path'] for value in raw_data.values()],
                     "rating": [value['rating'] for value in raw_data.values()],
                     })
-    data_file.to_csv(save_path, index=False)
+    data_file.to_csv(os.path.join(save_root, 'sac_raw.csv'), index=False)
+    return os.path.join(save_root, 'sac_raw.csv')

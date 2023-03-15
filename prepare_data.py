@@ -11,32 +11,26 @@ from preprocess.laion_prep import *
 from utils import *
 
 def get_raw_csv(dataset_name, raw_data_root, save_root, num_samples=None):
-    if dataset_name.lower() == 'midjourney':
+    if dataset_name == 'midjourney':
         raw_csv_path = get_midjourney(raw_data_root, save_root)
-    elif dataset_name.lower() == 'sac':
+    elif dataset_name == 'sac':
         raw_csv_path = get_sac(raw_data_root, save_root)
-    elif dataset_name.lower() == 'diffusiondb':
+    elif dataset_name == 'diffusiondb':
         raw_csv_path = get_diffusiondb(raw_data_root, save_root)
-    elif dataset_name.lower() == 'laion':
+    elif dataset_name == 'laion':
         raw_csv_path = get_laion(num_samples, raw_data_root, save_root)
-    else:
-        raise Exception('Please check the input dataset name! Choices: Midjourney, SAC, DiffusionDB, LAION. (case insensitive)')
     return raw_csv_path
 
 def get_tokenized(dataset_name, raw_csv_path, save_root):
-    if dataset_name.lower() in ['midjourney', 'sac', 'diffusiondb', 'laion']:
-        data_file = pd.read_csv(raw_csv_path)[:100]
-        tokenized_file = tokenize(data_file, dataset_name)
-        fn = os.path.join(save_root, '{}_tokenized.csv'.format(dataset_name))
-        tokenized_file.to_csv(fn, index=False)
-        return fn
-
-    else:
-        raise Exception('Please check the input dataset name! Choices: Midjourney, SAC, DiffusionDB, LAION. (case insensitive)')
+    data_file = pd.read_csv(raw_csv_path)
+    tokenized_file = tokenize(data_file, dataset_name)
+    fn = os.path.join(save_root, '{}_tokenized.csv'.format(dataset_name))
+    tokenized_file.to_csv(fn, index=False)
+    return fn
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_name', required=True, type=str)
+    parser.add_argument('--dataset_name', required=True, type=str, choices=['midjourney', 'diffusiondb', 'sac', 'laion'])
     parser.add_argument('--raw_data_root', required=True, type=str)
     parser.add_argument('--save_root', required=True, type=str)
     parser.add_argument('--num_samples', type=int, default=1000000)

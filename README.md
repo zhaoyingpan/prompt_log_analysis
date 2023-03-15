@@ -1,7 +1,7 @@
 # A Prompt Log Analysis of Text-to-Image Generation Systems
 
 ## About
-We provide code and data files for our paper *A Prompt Log Analysis of Text-to-Image Generation Systems*, including dataset preparation, term-level analysis, prompt-level analysis, and session-level analysis. See data files and visualizations at [Google drive](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link)
+We provide code and data files for our paper *A Prompt Log Analysis of Text-to-Image Generation Systems*, including dataset preparation, term-level analysis, prompt-level analysis, and session-level analysis. See data files and visualizations at [Google drive](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link).
 
 ## Table of Content
 * [Dataset](#dataset)
@@ -31,21 +31,21 @@ Dataset preparation includes extraction of useful information (prompt, timestamp
 To conduct dataset preparation, please git clone our repo, download the dataset according to the instruction of the dataset, and run this command
 
 ```python
-python prepare_data.py --dataset_name <dataset_name> --raw_data_root <root of raw dataset> --save_root <path of processed data files>
+python prepare_data.py --dataset_name <dataset_name> --raw_data_root <raw_dataset_root/path> --save_root <result_folder>
 ```
-where `--dataset_name` supports inputting one dataset name, choosing from `Midjourney/DiffusionDB/SAC/LAION` (case insensitive), `--raw_data_root` is the root folder of the downloaded raw dataset, and the `--save_root` is the folder where you wish to save the processed data.
+where `--dataset_name` supports inputting one dataset name, choosing from `midjourney/diffusiondb/sac/laion` (case sensitive), `--raw_data_root` is the root folder (Midjourney, LAION) or file path (DiffusionDB, SAC) of the downloaded raw dataset, and the `--save_root` is the folder where you wish to save results of the processed data.
 
 To prepare the subset from LAION-400M, please specify the augment `--num_samples` to set the number of samples in the subset. The default value is 1M. The example command
 
 ```python
-python prepare_data.py --dataset_name LAION --raw_data_root <root of raw dataset> --save_root <path of processed data files> --num_samples 1000000
+python prepare_data.py --dataset_name LAION --raw_data_root <raw_dataset_root/path> --save_root <result_folder> --num_samples 1000000
 ```
 
 ## Term-level analysis
 Term-level analysis contains basic statistics, first-order analysis, second-order analysis, and out-of-vocabulary (OOV) word analysis. For OOV analysis, please first conduct data preparation for both the user-input prompt dataset (midjourney/diffusiondb/sac) and subset from LAION.
 
 ```python
-python term_level.py --dataset_name <dataset_name> --data_path <the path of the tokenized file> --laion_path <the path of the tokenized file of LAION subset> --save_root <path of result data files>
+python term_level.py --dataset_name <dataset_name> --data_path <tokenized_file_path> --laion_path <tokenized_laion_file_path> --save_root <result_folder>
 ```
 It's recommended to create a new folder for `--save_root` to save the analysis result files.
 
@@ -56,7 +56,7 @@ It's recommended to create a new folder for `--save_root` to save the analysis r
 Session-level analysis contains session grouping, prompt frequency across users, edit distance within sessions, prompt repeats across session, edits analysis (added/deleted/replaced words of two adjacent prompts within sessions). See more details about sessions in our paper. Note that since sessions are grouped with a threshold of time, session-level analysis only supports `midjourney/diffusiondb`.
 
 ```python
-python session_level.py --dataset_name <dataset_name> --data_path <the path of the tokenized file> --session_df_path <path of session file> --threshold <the threshold used for session file>
+python session_level.py --dataset_name <dataset_name> --data_path <tokenized_file_path> --session_df_path <session_file_path> --threshold <session_threshold>
 ```
 
 `--threshold` can be used to set the time threshold for sessions, and the default value is 30 (min).
@@ -65,7 +65,7 @@ python session_level.py --dataset_name <dataset_name> --data_path <the path of t
 Prompt-level analysis contains basic statistics, DiffusionDB prompt frequency ranking plot, timestamp grouping plot, rating histogram (only for SAC), and the correlation of ratings and prompt lengths (only for SAC). For convenience, we use the files grouped by sessions for DiffusionDB prompt frequency ranking plot, but note that the analysis is not necessarily dependent on session analysis.
 
 ```python
-python prompt_level.py --dataset_name <dataset_name> --data_path <the path of the tokenized file> --session_df_path <path of session file> --save_root <path of result data files> --threshold <the threshold used for session file>
+python prompt_level.py --dataset_name <dataset_name> --data_path <tokenized_file_path> --save_root <result_folder>
 ```
 
 `--topk_prompts` can be used to adjust the number of top frequent prompts saved in the file.

@@ -20,7 +20,7 @@ def term_stats(data_path):
     print('Number of unique terms: {}'.format(num_unique_terms))
 
     num_tokens_per_prompt = [len(t) for t in tokens]
-    print('Statistics of number of tokens per prompt: {}'.format(num_tokens_per_prompt))
+    print('Statistics of number of tokens per prompt:')
     _, _, _, _ = data_statistics(num_tokens_per_prompt)
 
 def find_nondataset_word(dataset_name, data_path, laion_path, save_root):
@@ -31,12 +31,13 @@ def find_nondataset_word(dataset_name, data_path, laion_path, save_root):
     word_freq = OrderedDict(sorted({term: vocab[term] for term in words}.items(), key=lambda t: t[1], reverse=True))
     df = pd.DataFrame({'term': list(word_freq.keys()),
                        'freq': list(word_freq.values())})
-    df.to_csv(os.path.join(save_root, '{}_oov_words.csv'.format(dataset_name)), index=False)
-    return os.path.join(save_root, '{}_oov_words.csv'.format(dataset_name))
+    fn = os.path.join(save_root, '{}_oov_words.csv'.format(dataset_name))
+    df.to_csv(fn, index=False)
+    return fn
 
 class Reweighting():
     def __init__(self, dataset_name, all_word_paths, all_pairs_path, reweighting_save_root, cut_off_k):
-        self.dataset_name = dataset_name.lower()
+        self.dataset_name = dataset_name
         self.save_root = reweighting_save_root
         self.all_words_freqs = json.load(open(all_word_paths))
         all_term_pairs = json.load(open(all_pairs_path))
@@ -113,13 +114,13 @@ class Reweighting():
                 reweighted_freq = (reg ** alpha)*freq
                 reweighted_pairs[pair] = (reweighted_freq, freq, term_freq_1, term_freq_2)
             reweighted_pairs_list = sorted(reweighted_pairs.items(), key=lambda t: (t[1][0],t[1][1]), reverse=True)
-            csv_name = os.path.join(self.save_root, '{}_reweighted_pairs_ours_{}.csv'.format(self.dataset_name, str(alpha)))
-            with open(csv_name, 'w') as f:
+            fn = os.path.join(self.save_root, '{}_reweighted_pairs_ours_{}.csv'.format(self.dataset_name, str(alpha)))
+            with open(fn, 'w') as f:
                 write = csv.writer(f)
                 for pair in reweighted_pairs_list:
                     write.writerow(pair)
        
-        return csv_name
+        return fn
     
     def PMI(self):
         reweighted_pairs = {}
@@ -132,13 +133,13 @@ class Reweighting():
             reweighted_pairs[pair] = (reweighted_freq, freq, term_freq_1, term_freq_2)
         
         reweighted_pairs_list = sorted(reweighted_pairs.items(), key=lambda t: (t[1][0],t[1][1]), reverse=True)
-        csv_name = os.path.join(self.save_root, '{}_reweighted_pairs_PMI.csv'.format(self.dataset_name))
-        with open(csv_name, 'w') as f:
+        fn = os.path.join(self.save_root, '{}_reweighted_pairs_PMI.csv'.format(self.dataset_name))
+        with open(fn, 'w') as f:
             write = csv.writer(f)
             for pair in reweighted_pairs_list:
                 write.writerow(pair)
         
-        return csv_name
+        return fn
     
     def tstats(self):
 
@@ -160,13 +161,13 @@ class Reweighting():
             reweighted_pairs[pair] = (reweighted_freq, freq, term_freq_1, term_freq_2)
         
         reweighted_pairs_list = sorted(reweighted_pairs.items(), key=lambda t: (t[1][0],t[1][1]), reverse=True)
-        csv_name = os.path.join(self.save_root, '{}_reweighted_pairs_ttest.csv'.format(self.dataset_name))
-        with open(csv_name, 'w') as f:
+        fn = os.path.join(self.save_root, '{}_reweighted_pairs_ttest.csv'.format(self.dataset_name))
+        with open(fn, 'w') as f:
             write = csv.writer(f)
             for pair in reweighted_pairs_list:
                 write.writerow(pair)
         
-        return csv_name
+        return fn
     
     def chi_square(self):
         reweighted_pairs = {}
@@ -199,14 +200,13 @@ class Reweighting():
             reweighted_pairs[pair] = (reweighted_freq, freq, term_freq_1, term_freq_2)
         
         reweighted_pairs_list = sorted(reweighted_pairs.items(), key=lambda t: (t[1][0],t[1][1]), reverse=True)
-        csv_name = os.path.join(self.save_root, '{}_reweighted_pairs_chi-square.csv'.format(self.dataset_name))
-        with open(csv_name, 'w') as f:
+        fn = os.path.join(self.save_root, '{}_reweighted_pairs_chi-square.csv'.format(self.dataset_name))
+        with open(fn, 'w') as f:
             write = csv.writer(f)
             for pair in reweighted_pairs_list:
                 write.writerow(pair)
         
-        return csv_name
-    
+        return fn
 
 def first_order(dataset_name, csv_path, save_root):
     data = pd.read_csv(csv_path)
@@ -221,7 +221,8 @@ def first_order(dataset_name, csv_path, save_root):
     all_words_freqs = dict(Counter(all_terms))
     all_words_freqs = dict(sorted(all_words_freqs.items(), key=operator.itemgetter(1), reverse=True))
 
-    with open(os.path.join(save_root, "{}_all_words&freqs(with punctuation).json".format(dataset_name)), "w") as f:
+    fn = os.path.join(save_root, "{}_all_words&freqs(with punctuation).json".format(dataset_name))
+    with open(fn, "w") as f:
         json.dump(all_words_freqs, f)
 
     # Sort the dictionary by values in descending order
@@ -241,14 +242,14 @@ def first_order(dataset_name, csv_path, save_root):
         for key, value in all_words_freqs.items():
             writer.writerow([key, value])
     
-    return os.path.join(save_root, "{}_all_words&freqs(with punctuation).json")
+    return fn
 
 def second_order(dataset_name, csv_path, save_root):
     data = pd.read_csv(csv_path)
     tokenized_list = data['tokenized'].tolist()
 
     all_term_pairs = dict()
-    for tokenized_query in tqdm(tokenized_list):
+    for tokenized_query in tqdm.tqdm(tokenized_list):
         tokenized_query = literal_eval(tokenized_query)
         words = list(set(tokenized_query))
         try:
@@ -268,18 +269,19 @@ def second_order(dataset_name, csv_path, save_root):
         to_save_all_pairs[new_key] = value
 
     by_value_pairs = sorted(to_save_all_pairs.items(),key = lambda item:item[1], reverse=True)
-    with open(os.path.join(save_root, "{}_all_pairs.json".format(dataset_name)), "w") as outfile:
+    fn = os.path.join(save_root, "{}_all_pairs.json".format(dataset_name))
+    with open(fn, "w") as outfile:
         json.dump(by_value_pairs, outfile)
 
-    return os.path.join(save_root, "{}_all_pairs.json".format(dataset_name))
+    return fn
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_name', required=True, type=str)
+    parser.add_argument('--dataset_name', required=True, type=str, choices=['midjourney', 'diffusiondb', 'sac', 'laion'])
     parser.add_argument('--data_path', required=True, type=str)
     parser.add_argument('--laion_path', required=True, type=str)
     parser.add_argument('--save_root', required=True, type=str)
-    parser.add_argument('--reweighting_type', type=str, choices=['ours', 'PMI', 'tstats', 'chi-square'])
+    parser.add_argument('--reweighting_type', type=str, choices=['ours', 'PMI', 'tstats', 'chi-square'], default='chi-square')
     parser.add_argument('--cut_off_k', type=int, default=10000)
     args = parser.parse_args()
 
@@ -287,11 +289,19 @@ if __name__ == "__main__":
     term_stats(args.data_path)
 
     print('Begin first/second-order analysis...')
-    all_word_paths = first_order(args.dataset_name, args.csv_path, args.save_root)
-    all_pairs_path = second_order(args.dataset_name, args.csv_path, args.save_root)
+    all_word_paths = first_order(args.dataset_name, args.data_path, args.save_root)
+    all_pairs_path = second_order(args.dataset_name, args.data_path, args.save_root)
     reweight = Reweighting(args.dataset_name, all_word_paths, all_pairs_path, args.save_root, args.cut_off_k)
-    reweight_method = reweight.get_method(args.reweighting_type)
-    result_path = reweight_method()
+
+    if args.reweighting_type == 'ours':
+        result_path = reweight.ours()
+    elif args.reweighting_type == 'PMI':
+        result_path = reweight.PMI()
+    elif args.reweighting_type == 'tstats':
+        result_path = reweight.tstats()
+    elif args.reweighting_type == 'chi-square':
+        result_path = reweight.chi_square()
+
     print('Saved frequency with words (first-order) results to {}. Saved reweighted results (second-order) to {}.'.format(all_word_paths, result_path))
     
     print('Begin to find out-of-vocabulary (oov) words')

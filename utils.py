@@ -81,7 +81,7 @@ def tokenize(df, dataset_name):
             for token in doc:
                 if str(token) != ' ':
                     words.append(token.lower_)
-            if dataset_name.lower() == 'midjourney':
+            if dataset_name == 'midjourney':
                 words = merge_colons(words)
                 words = merge_colons_minus(words)
             if len(words) > 0:
@@ -173,12 +173,12 @@ def get_time_diff(timestamp1, timestamp2):
     return td_mins
 
 def cut_timestamp_sec(timestamp, dataset_name):
-    if dataset_name.lower() == 'midjourney':
+    if dataset_name == 'midjourney':
         if '+' in timestamp:
             timestamp = timestamp.split('+')[0]
         if '.' in timestamp:
             timestamp = timestamp.split('.')[0]
-    elif dataset_name.lower() == 'diffusiondb':
+    elif dataset_name == 'diffusiondb':
         timestamp = timestamp.split('+')[0].replace(' ', 'T')
 
     return timestamp
