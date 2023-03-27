@@ -7,7 +7,7 @@ We provide code for data preparation and prompt analysis in this repository. For
 ## Table of Content
 
 * [Datasets](#datasets)
-* [Dataset Preparation](#dataset-preparation)
+* [Data Preparation](#data-preparation)
 * [Prompt Analysis](#prompt-analysis)
   * [Term-level analysis](#term-level-analysis)
   * [Prompt-level analysis](#prompt-level-analysis)
@@ -25,7 +25,7 @@ Besides, we also support the LAION-400M dataset, the dataset for training text-t
 
 * [LAION-400M](https://www.kaggle.com/datasets/romainbeaumont/laion400m)
 
-## Dataset Preparation
+## Data Preparation
 Dataset preparation includes extraction of useful information (prompt, timestamp, user ID, etc.) from raw dataset, data cleaning for prompts, and tokenization for prompts. More details about dataset preprocessing can be found in the appendix of our paper.
 
 To conduct dataset preparation, please git clone our repo, download the dataset according to the instruction of the dataset, and run this command
