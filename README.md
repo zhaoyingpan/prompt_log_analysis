@@ -1,7 +1,7 @@
 # A Prompt Log Analysis of Text-to-Image Generation Systems
 
 Thanks for your interest in our WWW 2023 paper [A Prompt Log Analysis of Text-to-Image Generation Systems](). 
-We provide code for data preparation and prompt analysis in this repository. For the analysis results and visualizations, please refer to the [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link). 
+We provide code for data preparation and prompt analysis in this repository. For the analysis results and visualizations, please refer to the [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link) and see [Data File Descriptions](#data-files) for descriptions of the files.
 
 
 ## Table of Content
@@ -12,6 +12,7 @@ We provide code for data preparation and prompt analysis in this repository. For
   * [Term-level analysis](#term-level-analysis)
   * [Prompt-level analysis](#prompt-level-analysis)
   * [Session-level analysis](#session-level-analysis)
+* [Data File Descriptions](#data-file-descriptions)
 * [Citation and Contact](#citation-and-contact)
 
 ## Datasets
@@ -73,6 +74,27 @@ python session_level.py --dataset_name <dataset_name> --data_path <tokenized_fil
 `--threshold` can be used to set the time threshold for sessions, and the default value is 30 (min).
 
 
+## Data File Descriptions
+See our analysis results and visualizations at [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link). Here we also provide the descriptions of files.
+| |**Filename**: Description| 
+| --- | --- |
+| 1 |**Midjourney_all_terms_by_freq.csv**: All terms appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 2 |**DiffusionDB_all_terms_by_freq.csv**:  All terms appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 3 |**SAC_all_terms_by_freq.csv**:  All terms appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 4 |**Midjourney_reweighted_pairs.csv**: All term pairs appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 5 |**DiffusionDB_reweighted_pairs.csv**: All term pairs appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 6 |**SAC_reweighted_pairs.csv**: All term pairs appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 7 |**DiffusionDB_prompt_freq.csv**: Prompt frequencies in the DiffusionDB dataset (only include entries with a frequency greater than 1). The top 20 most frequent prompts are listed in Table 5.| 
+| 8 |**DiffusionDB_prompt_userfreq.csv**:  Prompts shared across users in the DiffusionDB dataset.(only include entries with a frequency greater than 1). Some most shared prompts are listed in Table 7.| 
+| 9 |**Midjourney_replaced_freq.csv**: Term replacements in sessions of the Midjourney dataset. The top 30 most frequent replacements are listed in Table 9.| 
+| 10 |**DiffusionDB_replaced_freq.csv**: Term replacements in sessions of the DiffusionDB dataset. The top 30 most frequent replacements are listed in Table 9.| 
+| 11 |**SAC_term_avg_rating.csv**: Terms ranked by average ratings in descending order.| 
+| 12 |**Midjourney_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the Midjourney dataset.| 
+| 13 |**DiffusionDB_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the DiffusionDB dataset.| 
+| 14 |**SAC_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the SAC dataset.| 
+| 15 |**Midjourney_word_embedding_top5000.html**: Using Bert, we encode the most frequent 5000 terms of each dataset into term embeddings. We use UMAP to reduce term embeddings to 2 dimensions. We save the results of each dataset visualization as these HTML files. Hover the mouse over the corresponding data point to view the corresponding terms.| 
+| 16 |**DiffusionDB_word_embedding_top5000.html**: Ditto.| 
+| 17 |**SAC_word_embedding_top5000.html**: Ditto.| 
 <!-- ## Cite -->
 
 ## Citation and Contact
