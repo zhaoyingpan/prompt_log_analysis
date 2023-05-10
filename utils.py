@@ -63,7 +63,9 @@ def merge_colons_minus(words):
 
 def tqdm_df(length, index):
     if index % (length // 10) == 0:
-        print('completed {}%'.format(10 * (index // (length // 10))))
+        print('completed {}%'.format(int(10 * (index // np.ceil(length / 10)))))
+    if index == length - 1:
+        print('completed 100%')
 
 
 def tokenize(df, dataset_name):

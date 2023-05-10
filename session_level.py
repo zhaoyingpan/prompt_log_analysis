@@ -293,20 +293,20 @@ if __name__ == "__main__":
     parser.add_argument('--threshold', required=True, type=int, default=30)
     args = parser.parse_args()
 
-    # print('Begin to group by sessions with threhold of {}min...'.format(args.threshold))
-    # session_df_path = df_mark_session(args.dataset_name, args.data_path, args.threshold, args.save_root)
-    # print('Results saved to {}.'.format(session_df_path))
+    print('Begin to group by sessions with threhold of {}min...'.format(args.threshold))
+    session_df_path = df_mark_session(args.dataset_name, args.data_path, args.threshold, args.save_root)
+    print('Results saved to {}.'.format(session_df_path))
 
-    # print('Begin to find repeats...'.format(args.threshold))
-    # repeats_df_path = find_all_repeat(args.dataset_name, session_df_path, args.save_root)
-    # print('Results saved to {}.'.format(repeats_df_path))
+    print('Begin to find repeats...'.format(args.threshold))
+    repeats_df_path = find_all_repeat(args.dataset_name, session_df_path, args.save_root)
+    print('Results saved to {}.'.format(repeats_df_path))
 
-    # print('Begin to rank most frequent prompts across user...')
-    # top_prompts_across_user_path = freq_across_user(args.dataset_name, repeats_df_path, args.save_root)
-    # print('Results saved to {}.'.format(top_prompts_across_user_path))
+    print('Begin to rank most frequent prompts across user...')
+    top_prompts_across_user_path = freq_across_user(args.dataset_name, repeats_df_path, args.save_root)
+    print('Results saved to {}.'.format(top_prompts_across_user_path))
 
-    # print('Statistics of edit distance within sessions...')
-    # get_edit_distance(session_df_path)
+    print('Statistics of edit distance within sessions...')
+    get_edit_distance(session_df_path)
 
     print('Begin to find editted word (added/deleted/replaced) within sessions...')
     replacement_path = find_editted_word(args.dataset_name, args.data_path, args.threshold, args.save_root)

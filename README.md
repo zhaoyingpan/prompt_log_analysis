@@ -1,7 +1,7 @@
 # A Prompt Log Analysis of Text-to-Image Generation Systems
 
 Thanks for your interest in our WWW 2023 paper [A Prompt Log Analysis of Text-to-Image Generation Systems](). 
-We provide code for data preparation and prompt analysis in this repository. For the analysis results and visualizations, please refer to the [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link) and see [Data File Descriptions](#data-files) for descriptions of the files.
+We provide code for data preparation and prompt analysis in this repository. Check our data files at [Google Drive folder](https://drive.google.com/drive/folders/119Ib6XkaksCQdagmgoRLnqpzPFzRxjBJ?usp=sharing). For the analysis results and visualizations, please refer to the [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link) and see [Data File Descriptions](#data-files) for descriptions of the files.
 
 
 ## Table of Content
@@ -68,7 +68,7 @@ python prompt_level.py --dataset_name <dataset_name> --data_path <tokenized_file
 Session-level analysis contains session grouping, prompt frequency across users, edit distance within sessions, prompt repeats across session, edits analysis (added/deleted/replaced words of two adjacent prompts within sessions). See more details about sessions in our paper. Note that since sessions are grouped with a threshold of time, session-level analysis only supports `midjourney/diffusiondb`.
 
 ```python
-python session_level.py --dataset_name <dataset_name> --data_path <tokenized_file_path> --session_df_path <session_file_path> --threshold <session_threshold>
+python session_level.py --dataset_name <dataset_name> --data_path <tokenized_file_path> --threshold <session_threshold> --save_root <result_folder>
 ```
 
 `--threshold` can be used to set the time threshold for sessions, and the default value is 30 (min).
@@ -76,25 +76,38 @@ python session_level.py --dataset_name <dataset_name> --data_path <tokenized_fil
 
 ## Data File Descriptions
 See our analysis results and visualizations at [Google Drive folder](https://drive.google.com/drive/folders/1iBYcQa2SoLFs6SF12BK3SgDTAZZVZv3x?usp=share_link). Here we also provide the descriptions of files.
+
 | |**Filename**: Description| 
 | --- | --- |
-| 1 |**Midjourney_all_terms_by_freq.csv**: All terms appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
-| 2 |**DiffusionDB_all_terms_by_freq.csv**:  All terms appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
-| 3 |**SAC_all_terms_by_freq.csv**:  All terms appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
-| 4 |**Midjourney_reweighted_pairs.csv**: All term pairs appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
-| 5 |**DiffusionDB_reweighted_pairs.csv**: All term pairs appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
-| 6 |**SAC_reweighted_pairs.csv**: All term pairs appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
-| 7 |**DiffusionDB_prompt_freq.csv**: Prompt frequencies in the DiffusionDB dataset (only include entries with a frequency greater than 1). The top 20 most frequent prompts are listed in Table 5.| 
-| 8 |**DiffusionDB_prompt_userfreq.csv**:  Prompts shared across users in the DiffusionDB dataset.(only include entries with a frequency greater than 1). Some most shared prompts are listed in Table 7.| 
-| 9 |**Midjourney_replaced_freq.csv**: Term replacements in sessions of the Midjourney dataset. The top 30 most frequent replacements are listed in Table 9.| 
-| 10 |**DiffusionDB_replaced_freq.csv**: Term replacements in sessions of the DiffusionDB dataset. The top 30 most frequent replacements are listed in Table 9.| 
-| 11 |**SAC_term_avg_rating.csv**: Terms ranked by average ratings in descending order.| 
-| 12 |**Midjourney_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the Midjourney dataset.| 
-| 13 |**DiffusionDB_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the DiffusionDB dataset.| 
-| 14 |**SAC_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the SAC dataset.| 
-| 15 |**Midjourney_word_embedding_top5000.html**: Using Bert, we encode the most frequent 5000 terms of each dataset into term embeddings. We use UMAP to reduce term embeddings to 2 dimensions. We save the results of each dataset visualization as these HTML files. Hover the mouse over the corresponding data point to view the corresponding terms.| 
-| 16 |**DiffusionDB_word_embedding_top5000.html**: Ditto.| 
-| 17 |**SAC_word_embedding_top5000.html**: Ditto.| 
+| 1 |**Midjourney_tokenized.csv**: Preprocessed and tokenized file for Midjourney dataset.| 
+| 2 |**DiffusionDB_tokenized.csv**: Preprocessed and tokenized file for DiffusionDB dataset.| 
+| 3 |**SAC_tokenized.csv**: Preprocessed and tokenized file for SAC dataset.| 
+| 4 |**LAION_tokenized.csv**: Preprocessed and tokenized file for LAION dataset (subset of 1M).| 
+| 5 |**Midjourney_all_terms_by_freq.csv**: All terms appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 6 |**DiffusionDB_all_terms_by_freq.csv**:  All terms appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 7 |**SAC_all_terms_by_freq.csv**:  All terms appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 terms are shown in Table 3.| 
+| 8 |**Midjourney_reweighted_pairs.csv**: All term pairs appeared in the Midjourney dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 9 |**DiffusionDB_reweighted_pairs.csv**: All term pairs appeared in the DiffusionDB dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 10 |**SAC_reweighted_pairs.csv**: All term pairs appeared in the SAC dataset, ranked by frequencies in descending order. The top 20 pairs are shown in Table 4.| 
+| 11 |**DiffusionDB_prompt_freq.csv**: Prompt frequencies in the DiffusionDB dataset (only include entries with a frequency greater than 1). The top 20 most frequent prompts are listed in Table 5.| 
+| 12 |**DiffusionDB_prompt_userfreq.csv**:  Prompts shared across users in the DiffusionDB dataset.(only include entries with a frequency greater than 1). Some most shared prompts are listed in Table 7.| 
+| 13 |**Midjourney_replaced_freq.csv**: Term replacements in sessions of the Midjourney dataset. The top 30 most frequent replacements are listed in Table 9.| 
+| 14 |**DiffusionDB_replaced_freq.csv**: Term replacements in sessions of the DiffusionDB dataset. The top 30 most frequent replacements are listed in Table 9.| 
+| 15 |**SAC_term_avg_rating.csv**: Terms ranked by average ratings in descending order.| 
+| 16 |**Midjourney_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the Midjourney dataset.| 
+| 17 |**DiffusionDB_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the DiffusionDB dataset.| 
+| 18 |**SAC_oov_terms.csv**: Out-of-vocabulary (OOV) terms in the SAC dataset.| 
+| 19 |**Midjourney_word_embedding_top5000.html**: Using Bert, we encode the most frequent 5000 terms of each dataset into term embeddings. We use UMAP to reduce term embeddings to 2 dimensions. We save the results of each dataset visualization as these HTML files. Hover the mouse over the corresponding data point to view the corresponding terms.| 
+| 16 |**DiffusionDB_word_embedding_top5000.html**: Similar to `Midjourney_word_embedding_top5000.html` but for DiffusionDB.| 
+| 17 |**SAC_word_embedding_top5000.html**: Similar to `Midjourney_word_embedding_top5000.html` but for SAC.| 
+
+Additionally:
+In our [data files](https://drive.google.com/drive/folders/119Ib6XkaksCQdagmgoRLnqpzPFzRxjBJ?usp=sharing), all files contain columns of `prompt` (cleaned prompts), `tokenized` (tokenized prompts). Except these two common columns, the files have dataset-specifc columns (only `timestamp`, `author_id`, and `rating` are utilized for the analysis, and other information is for reference). 
+  - `Midjourney_tokenized.csv` contains `url` (links for the generated images, may expire due to the policy of Discord), `timestamp`, `author_id`, and `username` for the prompts. 
+  - `DiffusionDB_tokenized.csv` contains `author_id`, `timestamp` and `image_name` for the prompts. 
+  - `SAC_tokenized.csv` contains `pid`, `method`, `iid`, `path`, and `rating`. One prompt could have multiple `pid`, and every `pid` has a corresponding `method` type, generating mutiple images marked with `iid`, saved to `path`, and rated with `rating`.
+  - `LAION_tokenized.csv` contains `sample_id` and `image_url` for prompts.
+
 <!-- ## Cite -->
 
 ## Citation and Contact

@@ -102,7 +102,7 @@ def plot_rating_vs_length(sac_path):
                 ratings.append(r)
     plt.figure(figsize=(10, 6))
 
-    s = sns.regplot(lengths, ratings, x_bins=50, color='tab:blue')
+    s = sns.regplot(x=lengths, y=ratings, x_bins=50, color='tab:blue')
     s.set_xticklabels(s.get_xticks())
     s.set_yticklabels(s.get_yticks())
     plt.grid(alpha=0.5)
